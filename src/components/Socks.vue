@@ -1,7 +1,5 @@
 <template>
 	<div id="app">
-		<div class="nav-bar"></div>
-
 		<div class="product">
 			<div class="product-image">
 				<img :src="image" />
@@ -10,6 +8,7 @@
 				<h1>{{ title }}</h1>
 				<p v-if="inStock > 0">In Stock</p>
 				<p v-else>Out of Stock</p>
+				<p>Shipping: {{ shipping }}</p>
 
 				<ul>
 					<li v-for="(detail, index) in details" :key="index">{{ detail }}</li>
@@ -18,10 +17,6 @@
 				<div v-for="(variant, index) in variants" :key="index" class="color-box" :class="variant.variantColor" @mouseover="updateProduct(index)"></div>
 
 				<button @click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to Cart</button>
-
-				<div class="cart">
-					<p>Cart ({{ cart }})</p>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -33,6 +28,12 @@
 
 	export default {
 		name: 'Socks',
+		props: {
+			premium: {
+				type: Boolean,
+				required: true
+			}
+		},
 		data() {
 			return {
 				brand: 'Vue Mastery',
@@ -52,14 +53,12 @@
 						variantImage: blueSocks,
 						variantQuantity: 0
 					}
-				],
-
-				cart: 0
+				]
 			}
 		},
 		methods: {
 			addToCart() {
-				this.cart += 1;
+				this.$emit('updateCart', this.variants[this.selectedVariant].variantId);
 			},
 			updateProduct(index) {
 				this.selectedVariant = index;
@@ -74,47 +73,38 @@
 			},
 			inStock() {
 				return this.variants[this.selectedVariant].variantQuantity;
+			},
+			shipping() {
+				return this.premium ? 'Free' : '$2.99';
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	body {
-		font-family: tahoma;
-		color:#282828;
-		margin: 0px;
-	}
-
-	.nav-bar {
-		background: linear-gradient(-90deg, #84CF6A, #16C0B0);
-		height: 60px;
-		margin-bottom: 15px;
-	}
-
 	.product {
 		display: flex;
 		flex-flow: wrap;
 		padding: 1rem;
 	}
 
-	img {
-		border: 1px solid #d8d8d8;
-		width: 70%;
-		margin: 40px;
-		box-shadow: 0px .5px 1px #d8d8d8;
-	}
-
 	.product-image {
 		width: 80%;
 	}
 
-	.product-image,
-	.product-info {
-		margin-top: 10px;
-		width: 50%;
+	.product-image img {
+		width: 70%;
+		border: 1px solid #d8d8d8;
+		box-shadow: 0px .5px 1px #d8d8d8;
+		margin: 40px;
 	}
 
+	.product-image,
+	.product-info {
+		width: 50%;
+		margin-top: 10px;
+	}
+	
 	.color-box {
 		width: 40px;
 		height: 40px;
@@ -129,21 +119,15 @@
 		background-color: blue;
 	}
 
-	.cart {
-		margin-right: 25px;
-		float: right;
-		border: 1px solid #d8d8d8;
-		padding: 5px 20px;
-	}
-
 	button {
-		margin-top: 30px;
+		width: 100px;
+		height: 40px;
+		font-size: 14px;
+		color: #ffffff;
 		border: none;
 		background-color: #1E95EA;
-		color: white;
-		height: 40px;
-		width: 100px;
-		font-size: 14px;
+		margin-top: 30px;
+		cursor: pointer;
 	} 
 
 	.disabledButton {
@@ -152,9 +136,9 @@
 
 	.review-form {
 		width: 400px;
+		border: 1px solid #d8d8d8;
 		padding: 20px;
 		margin: 40px;
-		border: 1px solid #d8d8d8;
 	}
 
 	input {
