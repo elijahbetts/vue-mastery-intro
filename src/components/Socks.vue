@@ -1,21 +1,41 @@
 <template>
 	<div id="app">
-		<Socks />
+		<div class="nav-bar"></div>
+
+		<div class="product">
+			<div class="product-image">
+				<img :src="image" />
+			</div>
+			<div class="product-info">
+				<h1>{{ product }}</h1>
+				<p v-if="inStock">In Stock</p>
+				<p v-else>Out of Stock</p>
+
+				<ul>
+					<li v-for="detail in details">{{detail}}</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-	import Socks from './components/Socks.vue';
+	import greenSocks from '@/assets/vmSocks-green.jpg';
 
 	export default {
-		name: 'app',
-		components: {
-			Socks
+		name: 'Socks',
+		data() {
+			return {
+				product: 'Vue Mastery Socks',
+				image: greenSocks,
+				inStock: true,
+				details: ['80% cotton', '20% polyester', 'Gender-neutral']
+			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	body {
 		font-family: tahoma;
 		color:#282828;
