@@ -10,9 +10,20 @@
 				<h1>{{ product }}</h1>
 				<p v-if="inStock">In Stock</p>
 				<p v-else>Out of Stock</p>
+
 				<ul>
-					<li v-for="detail in details">{{detail}}</li>
+					<li v-for="(detail, index) in details" :key="index">{{ detail }}</li>
 				</ul>
+
+				<div v-for="variant in variants" :key="variant.variantId">
+					<p @mouseover="updateProduct(variant.variantImage)">{{ variant.variantColor }}</p>
+				</div>
+
+				<button @click="addToCart">Add to Cart</button>
+
+				<div class="cart">
+					<p>Cart ({{ cart }})</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -20,6 +31,7 @@
 
 <script>
 	import greenSocks from '@/assets/vmSocks-green.jpg';
+	import blueSocks from '@/assets/vmSocks-blue.jpg';
 
 	export default {
 		name: 'Socks',
@@ -28,7 +40,29 @@
 				product: 'Vue Mastery Socks',
 				image: greenSocks,
 				inStock: true,
-				details: ['80% cotton', '20% polyester', 'Gender-neutral']
+				details: ['80% cotton', '20% polyester', 'Gender-neutral'],
+				variants: [
+					{
+						variantId: 2234,
+						variantColor: 'green',
+						variantImage: greenSocks
+					},
+					{
+						variantId: 2235,
+						variantColor: 'blue',
+						variantImage: blueSocks
+					}
+				],
+
+				cart: 0
+			}
+		},
+		methods: {
+			addToCart() {
+				this.cart += 1;
+			},
+			updateProduct(variantImage) {
+				this.image = variantImage;
 			}
 		}
 	}
