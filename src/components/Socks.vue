@@ -46,7 +46,8 @@
 				required: true
 			},
 			reviews: {
-				type: Array
+				type: Array,
+				required: true
 			}
 		},
 		data() {
