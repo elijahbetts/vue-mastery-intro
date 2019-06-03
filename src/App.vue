@@ -2,28 +2,34 @@
 	<div id="app">
 		<div class="nav-bar"></div>
 		<Cart :cart="cart" />
-		<Socks :premium="premium" @updateCart="updateCart" />
+		<Socks :premium="premium" :reviews="reviews" @updateCart="updateCart" />
+		<Review @submitReview="submitReview" />
 	</div>
 </template>
 
 <script>
 	import Cart from './components/Cart.vue';
 	import Socks from './components/Socks.vue';
+	import Review from './components/Review.vue';
 
 	export default {
 		name: 'app',
 		components: {
-			Cart, Socks
+			Cart, Socks, Review
 		},
 		data() {
 			return {
 				premium: true,
-				cart: []
+				cart: [],
+				reviews: []
 			}
 		},
 		methods: {
 			updateCart(id) {
 				this.cart.push(id);
+			},
+			submitReview(review) {
+				this.reviews.push(review);
 			}
 		}
 	}

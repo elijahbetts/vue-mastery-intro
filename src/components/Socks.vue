@@ -18,6 +18,18 @@
 
 				<button @click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to Cart</button>
 			</div>
+			<div class="product-reviews">
+				<h2>Reviews</h2>
+				<p v-if="!reviews.length">There are no reviews yet.</p>
+				
+				<ul>
+					<li v-for="review in reviews">
+						<p>{{ review.name }}</p>
+						<p>Rating: {{ review.rating }}</p>
+						<p>{{ review.review }}</p>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>
@@ -32,6 +44,9 @@
 			premium: {
 				type: Boolean,
 				required: true
+			},
+			reviews: {
+				type: Array
 			}
 		},
 		data() {
@@ -132,24 +147,6 @@
 
 	.disabledButton {
 		background-color: #d8d8d8;
-	}
-
-	.review-form {
-		width: 400px;
-		border: 1px solid #d8d8d8;
-		padding: 20px;
-		margin: 40px;
-	}
-
-	input {
-		width: 100%;  
-		height: 25px;
-		margin-bottom: 20px;
-	}
-
-	textarea {
-		width: 100%;
-		height: 60px;
 	}
 
 	.tab {
